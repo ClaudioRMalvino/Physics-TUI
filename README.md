@@ -73,7 +73,7 @@ pip install git+https://github.com/ClaudioRMalvino/physics_tui.git
 
 ```bash
 # Utilizing uv package manager
-uv install git+https://github.com/ClaudioRMalvino/physics-tui.git
+uvx --from git+https://github.com/ClaudioRMalvino/physics-tui.git physics-tui
 ```
 
 ### Development Install
