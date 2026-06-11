@@ -277,10 +277,17 @@ class Chapter7(PhysicsChapter):
                 )
 
             if initial_xpos == None:
-                return ((2.0 * work) / spring_const) + (final_xpos * final_xpos)
+                # The algebra yields x₁²; return the (positive) root.
+                square = ((2.0 * work) / spring_const) + (final_xpos * final_xpos)
+                if square < 0:
+                    raise ValueError("The discriminant cannot be negative")
+                return sqrt(square)
 
             if final_xpos == None:
-                return ((-2.0 * work) / spring_const) + (initial_xpos * initial_xpos)
+                square = ((-2.0 * work) / spring_const) + (initial_xpos * initial_xpos)
+                if square < 0:
+                    raise ValueError("The discriminant cannot be negative")
+                return sqrt(square)
 
             return (
                 -0.5

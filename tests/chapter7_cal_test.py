@@ -321,7 +321,8 @@ class TestWorkBySpring(unittest.TestCase):
         spring_const: List[float] = [10.0,1000.0]
         final_xpos: List[float] = [0.0, -10.0]
 
-        expected: List[Any] = [100.0, 100.2]
+        # x₁ = sqrt(2W/k + x₂²): sqrt(100) = 10, sqrt(100.2) ≈ 10.01
+        expected: List[Any] = [10.0, 10.01]
 
         for i in range(len(expected)):
             result = Chapter7.Calculate.work_by_spring(
@@ -329,7 +330,7 @@ class TestWorkBySpring(unittest.TestCase):
                 spring_const=spring_const[i],
                 final_xpos=final_xpos[i]
             )
-            self.assertAlmostEqual(result, expected[i], places=1)
+            self.assertAlmostEqual(result, expected[i], places=2)
 
     def test_solving_for_final_xpos(self) -> None:
         """
@@ -341,15 +342,25 @@ class TestWorkBySpring(unittest.TestCase):
         spring_const: List[float] = [10.0, 1000.0]
         initial_xpos: List[float] = [0.0, -10.0]
 
-        expected: List[Any] = [-100.0, 99.8]
+        # First case has x₂² = -2W/k + x₁² = -100: no real solution.
+        expected: List[Any] = [ValueError("The discriminant cannot be negative"), 9.99]
 
         for i in range(len(expected)):
-            result = Chapter7.Calculate.work_by_spring(
-                work=work[i],
-                spring_const=spring_const[i],
-                initial_xpos=initial_xpos[i]
-            )
-            self.assertAlmostEqual(result, expected[i], places=2) 
+            if isinstance(expected[i], ValueError):
+                with self.assertRaises(ValueError) as context:
+                    Chapter7.Calculate.work_by_spring(
+                        work=work[i],
+                        spring_const=spring_const[i],
+                        initial_xpos=initial_xpos[i]
+                    )
+                self.assertEqual(str(context.exception), str(expected[i]))
+            else:
+                result = Chapter7.Calculate.work_by_spring(
+                    work=work[i],
+                    spring_const=spring_const[i],
+                    initial_xpos=initial_xpos[i]
+                )
+                self.assertAlmostEqual(result, expected[i], places=2) 
 
 class TestKineticEnergy(unittest.TestCase):
     """
