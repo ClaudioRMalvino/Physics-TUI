@@ -2,7 +2,7 @@ import unittest
 from typing import List
 from unittest.case import TestCase
 
-from physics_TUI.unit_converter import Length
+from physics_TUI.unit_converter import Energy, Length, Time
 
 
 class TestLengthUnitConversion(unittest.TestCase):
@@ -119,3 +119,109 @@ class TestLengthUnitConversion(unittest.TestCase):
                 to_unit=to_unit[i]
             )
             self.assertAlmostEqual(result, expected[i], places=2)
+
+
+class TestTimeUnitConversion(unittest.TestCase):
+    """
+    Tests the conversion method within the Time class for unit conversion
+    """
+
+    def setUp(self) -> None:
+        """
+        Set up the Time instance for testing
+        """
+        self.time_converter = Time()
+
+    def test_converting_from_day_to_hour(self) -> None:
+        """
+        Function tests converting from days to hours
+        (regression pin for the fixed day factor)
+        """
+
+        # Test cases
+        scalar: List[float] = [1.0]
+        from_unit: List[str] = ["day"]
+        to_unit: List[str] = ["hour"]
+
+        expected: List[float] = [24.0]
+
+        for i in range(len(expected)):
+            result: float = self.time_converter.conversion(
+                scalar=scalar[i],
+                from_unit=from_unit[i],
+                to_unit=to_unit[i]
+            )
+            self.assertAlmostEqual(result, expected[i], places=6)
+
+    def test_converting_from_week_to_day(self) -> None:
+        """
+        Function tests converting from weeks to days
+        """
+
+        # Test cases
+        scalar: List[float] = [1.0]
+        from_unit: List[str] = ["week"]
+        to_unit: List[str] = ["day"]
+
+        expected: List[float] = [7.0]
+
+        for i in range(len(expected)):
+            result: float = self.time_converter.conversion(
+                scalar=scalar[i],
+                from_unit=from_unit[i],
+                to_unit=to_unit[i]
+            )
+            self.assertAlmostEqual(result, expected[i], places=6)
+
+
+class TestEnergyUnitConversion(unittest.TestCase):
+    """
+    Tests the conversion method within the Energy class for unit conversion
+    """
+
+    def setUp(self) -> None:
+        """
+        Set up the Energy instance for testing
+        """
+        self.energy_converter = Energy()
+
+    def test_converting_from_megawatt_hour_to_kilowatt_hour(self) -> None:
+        """
+        Function tests converting from megawatt-hours to kilowatt-hours
+        (regression pin for the fixed MWh factor)
+        """
+
+        # Test cases
+        scalar: List[float] = [1.0]
+        from_unit: List[str] = ["megawatt-hour"]
+        to_unit: List[str] = ["kilowatt-hour"]
+
+        expected: List[float] = [1000.0]
+
+        for i in range(len(expected)):
+            result: float = self.energy_converter.conversion(
+                scalar=scalar[i],
+                from_unit=from_unit[i],
+                to_unit=to_unit[i]
+            )
+            self.assertAlmostEqual(result, expected[i], places=6)
+
+    def test_converting_from_kilocalorie_to_calorie(self) -> None:
+        """
+        Function tests converting from kilocalories to calories
+        """
+
+        # Test cases
+        scalar: List[float] = [1.0]
+        from_unit: List[str] = ["kilocalorie"]
+        to_unit: List[str] = ["calorie"]
+
+        expected: List[float] = [1000.0]
+
+        for i in range(len(expected)):
+            result: float = self.energy_converter.conversion(
+                scalar=scalar[i],
+                from_unit=from_unit[i],
+                to_unit=to_unit[i]
+            )
+            self.assertAlmostEqual(result, expected[i], places=6)
