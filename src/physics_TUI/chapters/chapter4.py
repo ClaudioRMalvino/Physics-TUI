@@ -339,7 +339,6 @@ class Chapter4(PhysicsChapter):
                 )
 
             if v_0 is None:
-
                 if y == 0:
                     raise ValueError("Division by zero is undefined")
 
@@ -354,7 +353,6 @@ class Chapter4(PhysicsChapter):
                 return sqrt(radicand) / cos(theta_radian)
 
             if x is None:
-
                 raise ValueError(
                     "Cannot solve for x with this equation. Consider calculating the range."
                 )
@@ -391,7 +389,6 @@ class Chapter4(PhysicsChapter):
                 theta_radian: float = theta * (pi / 180.0)
 
             if v_0 == None:
-
                 if theta == 0.0:
                     raise ValueError("Division by zero is undefined.")
 
@@ -406,7 +403,6 @@ class Chapter4(PhysicsChapter):
                     return sqrt(radicand)
 
             if theta == None:
-
                 if v_0 == 0.0:
                     raise ValueError("Division by zero is undefined.")
 
@@ -459,7 +455,6 @@ class Chapter4(PhysicsChapter):
                 return sqrt(radicand)
 
             if radius == None:
-
                 if accel == 0:
                     raise ValueError("Division by zero is undefined.")
 
