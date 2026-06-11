@@ -217,7 +217,7 @@ class Chapter12(PhysicsChapter):
                     raise ValueError("Division by zero is undefined.")
 
                 # Calculates the initial volume
-                return -(bulk_mod * delta_pressure) / delta_pressure
+                return -(bulk_mod * delta_volume) / delta_pressure
 
             if delta_volume == None:
 

@@ -21,7 +21,7 @@ class Chapter9(PhysicsChapter):
             "v(i1)": "velocity_i1",
             "v(i2)": "velocity_i2",
             "v(f1)": "velocity_f1",
-            "v(f1)": "velocity_f2",
+            "v(f2)": "velocity_f2",
             "Δv": "delta_v",
             "u": "vel_exhaust",
             "m(i)": "initial_mass",
@@ -110,14 +110,14 @@ class Chapter9(PhysicsChapter):
             ),
             Equation(
                 name="Elastic collision of two objects (momentum)",
-                formula="m(1)v(i1) + m(2)v(i2) = m(1)v(f1) + m(2)v(f1)",
+                formula="m(1)v(i1) + m(2)v(i2) = m(1)v(f1) + m(2)v(f2)",
                 variables={
                     "m(1)": "Mass of the first object (kg)",
                     "m(2)": "Mass of the second object (kg)",
                     "v(i1)": "Initial velocity of the first object (m/s)",
                     "v(i2)": "Initial velocity of the second object (m/s)",
                     "v(f1)": "Final velocity of the first object (m/s)",
-                    "v(f1)": "Final velocity of the second object (m/s)",
+                    "v(f2)": "Final velocity of the second object (m/s)",
                 },
                 calculation=self.Calculate.elastic_collision_momentum,
             ),
@@ -324,18 +324,6 @@ class Chapter9(PhysicsChapter):
                 # Calculates the velocity after collision
                 return ((mass_1 * velocity_1) + (mass_2 * velocity_2)) / mass_f
 
-            if mass_1 == None and velocity_1 == None:
-                # Calculates the initial momentum of the first object
-                return (mass_f * velocity_f) - (mass_2 * velocity_2)
-
-            if mass_2 == None and velocity_2 == None:
-                # Calculates the initial momentum of the second object
-                return (mass_f * velocity_f) - (mass_1 * velocity_1)
-
-            if mass_f == None and velocity_f == None:
-                # Calculates final momentum
-                return (mass_1 * velocity_1) + (mass_2 * velocity_2)
-
             return 0.0
 
         @staticmethod
@@ -393,7 +381,7 @@ class Chapter9(PhysicsChapter):
                     raise ValueError("Divison by zero is undefined.")
 
                 # Calculates the mass of object 2
-                return ((mass_1 * velocity_i1) - (mass_1 * velocity_f1)) / (
+                return ((mass_1 * velocity_f1) - (mass_1 * velocity_i1)) / (
                     velocity_i2 - velocity_f2
                 )
 
@@ -429,92 +417,6 @@ class Chapter9(PhysicsChapter):
                     - (mass_1 * velocity_f1)
                 ) / mass_2
 
-            if mass_1 == None and velocity_i1 == None:
-
-                # Through the coefficient of restitution (COR) epsilon = 1 for
-                # perfectly elastic collisions we have v(i1) = v(f1) - v(f1) + v(i2)
-                velocity_i1: float = velocity_f2 - velocity_f1 + velocity_i2
-
-                if velocity_i1 == velocity_f1:
-                    raise ValueError("Division by zero is undefined.")
-
-                mass_1: float = (
-                    (mass_2 * velocity_i2) - (mass_2 * velocity_f2)
-                ) / (velocity_f1 - velocity_i1)
-
-                if mass_1 <= 0:
-                    raise ValueError(
-                        "Mass cannot be less than or equal to zero.\
-                        Check your signs."
-                    )
-
-                return mass_1 * velocity_i1
-
-            if mass_2 == None and velocity_i2 == None:
-
-                # Through the coefficient of restitution (COR) epsilon = 1 for
-                # perfectly elastic collisions we have v(i1) - v(i2) = v(f1) - v(f1)
-                velocity_i2: float = velocity_f2 - velocity_f1 - velocity_i1
-
-                if velocity_i2 == velocity_f2:
-                    raise ValueError("Divison by zero is undefined.")
-
-                # Calculates the mass of object 2
-                mass_2: float = (
-                    (mass_1 * velocity_i1) - (mass_1 * velocity_f1)
-                ) / (velocity_i2 - velocity_f2)
-
-                if mass_2 <= 0:
-                    raise ValueError(
-                        "Mass cannot be less than or equal to zero.\
-                        Check your signs."
-                    )
-
-                return mass_2 * velocity_i2
-
-            if mass_1 == None and velocity_f1 == None:
-
-                # Through the coefficient of restitution (COR) epsilon = 1 for
-                # perfectly elastic collisions we have v(i1) - v(i2) = v(f1) - v(f1)
-                velocity_f1: float = velocity_f2 - velocity_i1 + velocity_i2
-
-                if velocity_i1 == velocity_f1:
-                    raise ValueError("Division by zero is undefined.")
-
-                mass_1: float = (
-                    (mass_2 * velocity_i2) - (mass_2 * velocity_f2)
-                ) / (velocity_f1 - velocity_i1)
-
-                if mass_1 <= 0:
-                    raise ValueError(
-                        "Mass cannot be less than or equal to zero.\
-                        Check your signs."
-                    )
-
-                return mass_1 * velocity_f1
-
-            if mass_2 == None and velocity_f2 == None:
-
-                # Through the coefficient of restitution (COR) epsilon = 1 for
-                # perfectly elastic collisions we have v(i1) - v(i2) = v(f1) - v(f1)
-                velocity_f2: float = velocity_f1 + velocity_i1 - velocity_i2
-
-                if velocity_i2 == velocity_f2:
-                    raise ValueError("Divison by zero is undefined.")
-
-                # Calculates the mass of object 2
-                mass_2: float = (
-                    (mass_1 * velocity_i1) - (mass_1 * velocity_f1)
-                ) / (velocity_i2 - velocity_f2)
-
-                if mass_2 <= 0:
-                    raise ValueError(
-                        "Mass cannot be less than or equal to zero.\
-                        Check your signs."
-                    )
-
-                return mass_2 * velocity_f2
-
             return 0.0
 
         @staticmethod
@@ -541,7 +443,12 @@ class Chapter9(PhysicsChapter):
                 float: the result of whichever variable was left equal to None
             """
 
-            if initial_mass is not None and initial_mass <= 0 or final_mass <= 0:
+            if (
+                initial_mass is not None
+                and initial_mass <= 0
+                or final_mass is not None
+                and final_mass <= 0
+            ):
                 raise ValueError(
                     "We are operating with massive objects. \
                     Mass must be greater than zero."

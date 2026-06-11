@@ -103,7 +103,7 @@ class Chapter11(PhysicsChapter):
             ),
             Equation(
                 name="Conservation of angular momentum",
-                formula="L = l₁ + l₂ + ... + I(N) = constant",
+                formula="L = l₁ + l₂ + ... + l(N) = constant",
                 variables={},
             ),
             Equation(
@@ -187,14 +187,16 @@ class Chapter11(PhysicsChapter):
                 raise ValueError("Radius cannot be less than or equal to zero.")
 
             if mass == None:
+
+                if accel == 0.0:
+                    raise ValueError("Division by zero is undefined.")
+
                 # Calculates the mass
-                numerator: float = (
-                    (accel / (g * sin(theta_radians))) - 1.0
-                ) * moment_inertia
+                denominator: float = (radius * radius) * (
+                    ((g * sin(theta_radians)) / accel) - 1.0
+                )
 
-                denominator: float = radius * radius
-
-                return numerator / denominator
+                return moment_inertia / denominator
 
             if moment_inertia == None:
 
@@ -278,7 +280,7 @@ class Chapter11(PhysicsChapter):
                 # Calculates moment of inertia
                 return angular_momentum / angular_vel
 
-            if angular_vel == 0.0:
+            if angular_vel == None:
 
                 if moment_interia == 0.0:
                     raise ValueError("Divison by zero is undefined.")
@@ -358,7 +360,7 @@ class Chapter11(PhysicsChapter):
 
             if angular_vel == None:
 
-                if angular_vel == 0.0:
+                if proccesional_ang_vel == 0.0 or moment_inertia == 0.0:
                     raise ValueError("Division by zero is undefined.")
 
                 # Calculates the angular velocity

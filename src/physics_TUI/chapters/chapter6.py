@@ -58,7 +58,7 @@ class Chapter6(PhysicsChapter):
                     "v": "Tangential velocity (m/s)",
                     "r": "Radius (m)",
                 },
-                calculation=self.Calculate.centripetal_force_ang_vel,
+                calculation=self.Calculate.centripetal_force_tang_vel,
             ),
             Equation(
                 name="Centripetal force with angular velocity",
@@ -69,7 +69,7 @@ class Chapter6(PhysicsChapter):
                     "ω": "Tangential velocity (rads/s)",
                     "r": "Radius (m)",
                 },
-                calculation=self.Calculate.centripetal_force_tang_vel,
+                calculation=self.Calculate.centripetal_force_ang_vel,
             ),
             Equation(
                 name="Ideal angle of a banked curve",
@@ -362,7 +362,7 @@ class Chapter6(PhysicsChapter):
                     raise ValueError("Division by zero is undefined.")
 
                 # Calculates for radius
-                return ((velocity * velocity) / g) * tan(theta_radians)
+                return (velocity * velocity) / (g * tan(theta_radians))
 
             # Calculates the ideal angle theta
             argument: float = (velocity * velocity) / (radius * g)
@@ -558,11 +558,15 @@ class Chapter6(PhysicsChapter):
 
             if mass == None:
                 # Calculates the mass
-                return sqrt(terminal_vel) * ((drag_coeff * area * fluid_dens) / (2 * g))
+                return (terminal_vel * terminal_vel) * (
+                    (drag_coeff * area * fluid_dens) / (2 * g)
+                )
 
             if drag_coeff == None:
                 # Calculates the drag coefficient
-                return (2 * mass * g) / (sqrt(terminal_vel) * area * fluid_dens)
+                return (2 * mass * g) / (
+                    (terminal_vel * terminal_vel) * area * fluid_dens
+                )
 
             if area == None:
 
@@ -570,15 +574,19 @@ class Chapter6(PhysicsChapter):
                     raise ValueError("Division by zero is undefined.")
 
                 # Calculates the area
-                return (2 * mass * g) / (sqrt(terminal_vel) * drag_coeff * fluid_dens)
+                return (2 * mass * g) / (
+                    (terminal_vel * terminal_vel) * drag_coeff * fluid_dens
+                )
 
-            if fluid_dens == 0:
+            if fluid_dens is None:
 
                 if drag_coeff == 0:
                     raise ValueError("Division by zero is undefined.")
 
                 # Calculates the area
-                return (2 * mass * g) / (sqrt(terminal_vel) * drag_coeff * area)
+                return (2 * mass * g) / (
+                    (terminal_vel * terminal_vel) * drag_coeff * area
+                )
 
             radicand: float = (2 * mass * g) / (fluid_dens * drag_coeff * area)
             

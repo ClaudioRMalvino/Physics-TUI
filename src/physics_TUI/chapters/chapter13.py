@@ -1,6 +1,6 @@
 from typing import List, Optional, Dict
 from physics_TUI.base_chapter import PhysicsChapter, Equation, Definition
-from math import sqrt, cos, acos, cbrt
+from math import sqrt, cos, acos, cbrt, pi
 
 # Global constants
 G: float = 6.674e-11  # Newton's gravitational constant
@@ -383,7 +383,7 @@ class Chapter13(PhysicsChapter):
 
             if mass_body == None:
                 # Calculates the acceleration due to gravity
-                return (g * (radius * radius)) / G
+                return (g * (distance * distance)) / G
 
             if distance == None:
                 # Calculates the radius of the stellar body
@@ -394,7 +394,7 @@ class Chapter13(PhysicsChapter):
 
                 return sqrt(radicand)
 
-            return (G * mass_body) / (radius * radius)
+            return (G * mass_body) / (distance * distance)
 
         @staticmethod
         def gravitational_potential(
@@ -560,24 +560,26 @@ class Chapter13(PhysicsChapter):
                 if velocity_1 == 0.0 or velocity_2 == 0.0:
                     raise ValueError("Division by zero is undefined.")
 
-                coeff: float = -(1.0 / G * mass_body * mass_object)
-                term1: float = 0.5 * mass_object * (velocity_1 * velocity_1)
-                term2: float = (G * mass_object * mass_body) / distance_1
-                term3: float = 0.5 * mass_object * (velocity_2 * velocity_2)
+                denominator: float = (
+                    0.5 * (velocity_2 * velocity_2)
+                    - 0.5 * (velocity_1 * velocity_1)
+                    + (G * mass_body) / distance_1
+                )
 
-                return coeff * (term1 - term2 - term3)
+                return (G * mass_body) / denominator
 
             if distance_1 == None:
 
                 if velocity_1 == 0.0 or velocity_2 == 0.0:
                     raise ValueError("Division by zero is undefined.")
 
-                coeff: float = 1.0 / G * mass_body * mass_object
-                term1: float = 0.5 * mass_object * (velocity_1 * velocity_1)
-                term2: float = (G * mass_object * mass_body) / distance_2
-                term3: float = 0.5 * mass_object * (velocity_2 * velocity_2)
+                denominator: float = (
+                    0.5 * (velocity_1 * velocity_1)
+                    - 0.5 * (velocity_2 * velocity_2)
+                    + (G * mass_body) / distance_2
+                )
 
-                return coeff * (term1 + term2 - term3)
+                return (G * mass_body) / denominator
 
             if velocity_1 == None:
 
@@ -595,7 +597,7 @@ class Chapter13(PhysicsChapter):
 
                 return sqrt(radicand)
 
-            if velocity_1 == None:
+            if velocity_2 == None:
 
                 term1: float = (0.5) * mass_object * (velocity_1 * velocity_1)
                 term2: float = (G * mass_body * mass_object) / distance_1
@@ -658,7 +660,7 @@ class Chapter13(PhysicsChapter):
                         Check your values."
                     )
 
-                return (sqrt(escape_vel) * radius) / (2.0 * G)
+                return ((escape_vel * escape_vel) * radius) / (2.0 * G)
 
             if radius == None:
 
@@ -671,7 +673,7 @@ class Chapter13(PhysicsChapter):
                 if escape_vel == 0.0:
                     raise ValueError("Divison by zero is undefined.")
 
-                return (2.0 * G * mass_body) / sqrt(escape_vel)
+                return (2.0 * G * mass_body) / (escape_vel * escape_vel)
 
             radicand: float = (2.0 * G * mass_body) / radius
 
@@ -717,7 +719,7 @@ class Chapter13(PhysicsChapter):
                 Make sure all objects have a mass greater than zero."
                 )
 
-            if radius is not None and distance <= 0:
+            if distance is not None and distance <= 0:
                 raise ValueError("Radius of stellar body must be greater than zero.")
 
             if mass_body == None:
@@ -729,7 +731,7 @@ class Chapter13(PhysicsChapter):
                         Check your values."
                     )
 
-                return (sqrt(orbital_vel) * distance) / G
+                return ((orbital_vel * orbital_vel) * distance) / G
 
             if distance == None:
 
@@ -742,7 +744,7 @@ class Chapter13(PhysicsChapter):
                 if orbital_vel == 0.0:
                     raise ValueError("Divison by zero is undefined.")
 
-                return (G * mass_body) / sqrt(orbital_vel)
+                return (G * mass_body) / (orbital_vel * orbital_vel)
 
             radicand: float = (G * mass_body) / distance
 
@@ -794,7 +796,7 @@ class Chapter13(PhysicsChapter):
 
             if distance == None:
 
-                radicand: float = ((period / 2 * pi) ** 2) * (G * mass_body)
+                radicand: float = ((period / (2 * pi)) ** 2) * (G * mass_body)
                 return cbrt(radicand)
 
             radicand: float = (distance**3) / (G * mass_body)
@@ -893,7 +895,7 @@ class Chapter13(PhysicsChapter):
             const: float = 4.0 * (pi * pi)
 
             if period is not None:
-                period_sq: float = orbital_period * orbital_period
+                period_sq: float = period * period
 
             if mass_body is not None and mass_body <= 0.0:
                 raise ValueError(
@@ -915,7 +917,7 @@ class Chapter13(PhysicsChapter):
 
             argument: float = semi_major_axis**3 * (const / (G * mass_body))
 
-            return cbrt(argument)
+            return sqrt(argument)
 
         @staticmethod
         def schwarzschild_radius(

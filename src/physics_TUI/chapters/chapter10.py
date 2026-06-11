@@ -172,7 +172,7 @@ class Chapter10(PhysicsChapter):
             ),
             Equation(
                 name="Moment of inertia of a continuous object",
-                formula="I = ∫rdm",
+                formula="I = ∫r²dm",
                 variables={
                     "I": "Moment of inertia (kg⋅m²)",
                     "r": "Distance to the axis of rotation (m)",
@@ -396,7 +396,7 @@ class Chapter10(PhysicsChapter):
                 float: the result of whichever variable was left equal to None
             """
 
-            if r is not None and r <= 0.0:
+            if radius is not None and radius <= 0.0:
                 raise ValueError(
                     "Radius of rotational trajectory cannot be \
                     less than or equal to zero."
@@ -445,18 +445,18 @@ class Chapter10(PhysicsChapter):
 
             if radius == None:
 
-                if omega == 0.0:
+                if angular_vel == 0.0:
                     raise ValueError("Divison by zero is undefined.")
 
                 # Calculates the radius
-                return tang_speed / omega
+                return tang_speed / angular_vel
 
-            if omega == None:
+            if angular_vel == None:
                 # Calculates angular velocity
-                return tang_speed / omega
+                return tang_speed / radius
 
             # Calculates tengential speed
-            return radius * omega
+            return radius * angular_vel
 
         @staticmethod
         def average_angular_vel(
@@ -571,6 +571,14 @@ class Chapter10(PhysicsChapter):
 
                 # Calculates the constant angular acceleration
                 return (final_angular_vel - init_angular_vel) / time
+
+            if time == None:
+
+                if const_angular_accel == 0.0:
+                    raise ValueError("Division by zero is undefined.")
+
+                # Calculates the time
+                return (final_angular_vel - init_angular_vel) / const_angular_accel
 
             return init_angular_vel + (const_angular_accel * time)
 
@@ -715,7 +723,7 @@ class Chapter10(PhysicsChapter):
                 return (
                     (final_angular_vel * final_angular_vel)
                     - (init_angular_vel * init_angular_vel)
-                ) / (2 * delta_theta)
+                ) / (2 * const_angular_accel)
 
             radicand: float = (
                 init_angular_vel * init_angular_vel

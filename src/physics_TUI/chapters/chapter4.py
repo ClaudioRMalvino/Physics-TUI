@@ -128,14 +128,14 @@ class Chapter4(PhysicsChapter):
                 },
             ),
             Equation(
-                name="Tangential acceleration", formula="a(c) = d|v|/dt", variables={}
+                name="Tangential acceleration", formula="a(T) = d|v|/dt", variables={}
             ),
             Equation(
                 name="Total acceleration",
                 formula="a(t) = a_c + a_T",
                 variables={
                     "a(c)": "Centripetal acceleration (m/s²)",
-                    "a(c)": "Tangential acceleration (m/s²)",
+                    "a(T)": "Tangential acceleration (m/s²)",
                 },
             ),
             Equation(
@@ -156,7 +156,7 @@ class Chapter4(PhysicsChapter):
             ),
             Equation(
                 name="Relative velocity equation (more than two reference frames)",
-                formula="v(PC) = v(PA) + v(AB) + v(B)",
+                formula="v(PC) = v(PA) + v(AB) + v(BC)",
                 variables={
                     "v(PA)": "Relative velocity between points P and A",
                     "v(AB)": "Relative velocity between points A and B",
@@ -441,7 +441,7 @@ class Chapter4(PhysicsChapter):
                 float: the result of whichever variable was left equal to None
             """
 
-            if radius <= 0:
+            if radius is not None and radius <= 0:
                 raise ValueError("Radius cannot be less than or equal to zero.")
 
             if velocity == None:

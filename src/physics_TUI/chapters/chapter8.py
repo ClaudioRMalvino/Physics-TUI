@@ -19,7 +19,7 @@ class Chapter8(PhysicsChapter):
                 variables={
                     "ΔUαβ": "Change in gravitational potential energy (J)",
                     "Uβ": "Gravitational potential energy at final position (J)",
-                    "Uα": "Gravitational potential energy at final position (J)",
+                    "Uα": "Gravitational potential energy at initial position (J)",
                     "Wαβ": "Work done from point α to point β (J)",
                 },
             ),
@@ -27,7 +27,7 @@ class Chapter8(PhysicsChapter):
                 name="Conservation of Energy",
                 formula="Wₙc,αβ = Δ(K + U)αβ = ΔEαβ",
                 variables={
-                    "0 = Wₙc,αβ": "Non-conservative work (J)",
+                    "Wₙc,αβ": "Non-conservative work (J)",
                     "Δ(K + U)αβ": "The sum of the changes in kinetic energy and potential energy from α to β (J)",
                     "ΔEαβ": "The change in energy of the system (J)",
                 },
@@ -53,7 +53,7 @@ class Chapter8(PhysicsChapter):
                 formula="F(l) = -∂U/∂x(l)",
                 variables={
                     "F(l)": "Conservative force (N)",
-                    "dU/dx(l)": "Derivative of F(l) with respect to x",
+                    "dU/dx(l)": "Derivative of U with respect to x(l)",
                 },
             ),
         ]

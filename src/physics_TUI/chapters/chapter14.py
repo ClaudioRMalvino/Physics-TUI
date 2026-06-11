@@ -1,4 +1,5 @@
 from typing import List, Optional, Dict
+from math import sqrt, pi
 from physics_TUI.base_chapter import PhysicsChapter, Equation, Definition
 
 # Global constant
@@ -501,9 +502,9 @@ class Chapter14(PhysicsChapter):
             
             if area_2 == None:
 
-                if velocity_1 == 0.0:
+                if velocity_2 == 0.0:
                     raise ValueError("Division by zero is undefined.")
-                
+
                 numerator:float = (density_1 * area_1 * velocity_1)
                 denominator: float = density_2 * velocity_2
                 
@@ -557,7 +558,7 @@ class Chapter14(PhysicsChapter):
 
                 term1: float = 0.5 * (velocity_1 * velocity_1)
                 term2: float = g * height_1
-                term3: 0.5 * (velocity_2 * velocity_2)
+                term3: float = 0.5 * (velocity_2 * velocity_2)
                 term4: float = g * height_2
                 numerator: float = pressure_2 - pressure_1
                 denominator: float = term1 + term2 - term3 - term4
@@ -569,67 +570,63 @@ class Chapter14(PhysicsChapter):
             
             if pressure_1 == None:
 
-                term1: float = 0.5 * (velocity_1 * velocity_1)
-                term2: float = g * height_1
-                term3: 0.5 * (velocity_2 * velocity_2)
-                term4: float = g * height_2
+                term1: float = 0.5 * density * (velocity_1 * velocity_1)
+                term2: float = density * g * height_1
+                term3: float = 0.5 * density * (velocity_2 * velocity_2)
+                term4: float = density * g * height_2
 
                 return pressure_2 + term3 + term4 - term1 - term2
             
             if velocity_1 == None:
                 
-                term1: float = 0.5 * (velocity_1 * velocity_1)
-                term2: float = g * height_1
-                term3: 0.5 * (velocity_2 * velocity_2)
-                term4: float = g * height_2
+                term2: float = density * g * height_1
+                term3: float = 0.5 * density * (velocity_2 * velocity_2)
+                term4: float = density * g * height_2
                 coeff: float = (0.5) * density
                 radicand:float = pressure_2 - pressure_1 + term3 + term4 - term2
-                
+
                 if radicand < 0.0:
                     raise ValueError("Negative radicand yields an imaginary number")
-                
-                return sqrt(coeff*radicand)
-            
-            if height_1 == None:
-                
-                term1: float = 0.5 * (velocity_1 * velocity_1)
-                term2: float = g * height_1
-                term3: 0.5 * (velocity_2 * velocity_2)
-                term4: float = g * height_2
 
-                return (pressure_2 - pressure_1 + term3 + term4 - term1) / g
+                return sqrt(radicand/coeff)
+
+            if height_1 == None:
+
+                term1: float = 0.5 * density * (velocity_1 * velocity_1)
+                term3: float = 0.5 * density * (velocity_2 * velocity_2)
+                term4: float = density * g * height_2
+
+                return (pressure_2 - pressure_1 + term3 + term4 - term1) / (density * g)
             
             if pressure_2 == None:
 
-                term1: float = 0.5 * (velocity_1 * velocity_1)
-                term2: float = g * height_1
-                term3: 0.5 * (velocity_2 * velocity_2)
-                term4: float = g * height_2
+                term1: float = 0.5 * density * (velocity_1 * velocity_1)
+                term2: float = density * g * height_1
+                term3: float = 0.5 * density * (velocity_2 * velocity_2)
+                term4: float = density * g * height_2
 
                 return pressure_1 - term3 - term4 + term1 +term2
             
             if velocity_2 == None:
                 
-                term1: float = 0.5 * (velocity_1 * velocity_1)
-                term2: float = g * height_1
-                term3: 0.5 * (velocity_2 * velocity_2)
-                term4: float = g * height_2
+                term1: float = 0.5 * density * (velocity_1 * velocity_1)
+                term2: float = density * g * height_1
+                term4: float = density * g * height_2
                 coeff: float = (0.5) * density
                 radicand:float = -pressure_2 + pressure_1 - term4 + term2 + term1
-                
+
                 if radicand < 0.0:
                     raise ValueError("Negative radicand yields an imaginary number")
-                
-                return sqrt(coeff*radicand)
-            
-            if height_2 == None:
-                
-                term1: float = 0.5 * (velocity_1 * velocity_1)
-                term2: float = g * height_1
-                term3: 0.5 * (velocity_2 * velocity_2)
-                term4: float = g * height_2
 
-                return (-pressure_2 + pressure_1 - term3 + term2 + term1) / g
+                return sqrt(radicand/coeff)
+
+            if height_2 == None:
+
+                term1: float = 0.5 * density * (velocity_1 * velocity_1)
+                term2: float = density * g * height_1
+                term3: float = 0.5 * density * (velocity_2 * velocity_2)
+
+                return (-pressure_2 + pressure_1 - term3 + term2 + term1) / (density * g)
             
             return 0.0
 
@@ -642,7 +639,7 @@ class Chapter14(PhysicsChapter):
             velocity: Optional[float]=None,
         ) -> float:
             
-            if length is not None and length <= 0.0 or area is not None and area <= 0.0:
+            if distance is not None and distance <= 0.0 or area is not None and area <= 0.0:
                 raise ValueError("Dimensions of length and area cannot be less than or equal to zero.")
             
             if force == None:
@@ -665,9 +662,9 @@ class Chapter14(PhysicsChapter):
 
                 return ((force * distance) / (viscocity * area))
             
-            if viscocity == 0.0:
+            if velocity == 0.0:
                     raise ValueError("Division by zero is undefined.")
-            
+
             return (force * distance) /  (velocity * area)
         
         @staticmethod
@@ -693,7 +690,7 @@ class Chapter14(PhysicsChapter):
                     raise ValueError("Division by zero is undefined.")
                 radicand: float = (8.0 * viscocity * length) / (pi * resistance)
 
-                return radicand**1/4
+                return radicand**(1/4)
             
             return (8.0 * viscocity * length) / (pi * radius**4)            
 
@@ -715,7 +712,7 @@ class Chapter14(PhysicsChapter):
                 if flow == 0.0:
                     raise ValueError("Division by zero is undefined.")
 
-                numerator: float = (pressure_2 - pressure_1) * (pi * (radius**4))
+                numerator: float = (pressure_1 - pressure_2) * (pi * (radius**4))
                 denominator: float = 8.0 * length * flow
 
                 return numerator / denominator
@@ -725,7 +722,7 @@ class Chapter14(PhysicsChapter):
                 if viscocity == 0.0 or flow == 0.0:
                     raise ValueError("Division by zero is undefined.")
 
-                numerator: float = (pressure_2 - pressure_1) * (pi * (radius**4))
+                numerator: float = (pressure_1 - pressure_2) * (pi * (radius**4))
                 denominator: float = 8.0 * viscocity * flow
 
                 return numerator / denominator
@@ -733,24 +730,24 @@ class Chapter14(PhysicsChapter):
             if radius == None:
 
                 numerator: float = flow * 8.0 * viscocity * length
-                denominator: float = (pressure_2 - pressure_1) * pi
+                denominator: float = (pressure_1 - pressure_2) * pi
                 radicand: float = numerator / denominator
 
-                return (radicand)**1/4
+                return (radicand)**(1/4)
 
             if pressure_1 == None:
 
-                numerator: float = -flow * 8.0 * viscocity * length
+                numerator: float = flow * 8.0 * viscocity * length
                 denominator: float = pi * radius**4
                 return (numerator/denominator) + pressure_2
 
             if pressure_2 == None:
 
-                numerator: float = flow * 8.0 * viscocity * length
+                numerator: float = -flow * 8.0 * viscocity * length
                 denominator: float = pi * radius**4
                 return (numerator/denominator) + pressure_1
-            
-            numerator: float = (pressure_2 - pressure_1) * pi * radius**4
+
+            numerator: float = (pressure_1 - pressure_2) * pi * radius**4
             denominator: float = 8.0 * viscocity * length
 
             return numerator / denominator
