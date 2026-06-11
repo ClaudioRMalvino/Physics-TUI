@@ -393,7 +393,7 @@ class Chapter3(PhysicsChapter):
                 # Solves for v_0 (initial velocity)
                 if t == 0:
                     raise ValueError("Cannot solve for v_0 when t=0")
-                return round((y_f - y_0 - (0.5 * g * (t * tuple))) / t, 4)
+                return round((y_f - y_0 - (0.5 * g * (t * t))) / t, 4)
 
             elif t is None:
                 # Solves for t (elapsed time)
