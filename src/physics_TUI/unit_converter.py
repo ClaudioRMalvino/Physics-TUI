@@ -87,7 +87,7 @@ class Mass(Quantity):
             "microgram": 1.0E-6,
             "milligram": 1.0E-3,
             "centigram": 1.0E-2,
-            "decimgram": 1.0E-1,
+            "decigram": 1.0E-1,
             "gram": 1.0,
             "kilogram": 1.0E+3,
             "ounce": 28.349,
@@ -146,8 +146,9 @@ class Energy(Quantity):
             "megajoule": 1.0E+6,
             "watt-hour": 3.6E+3,
             "kilowatt-hour": 3.6E+6,
-            "megawatt-hour": 3.6E+6,
-            "calorie": 4186.8,
+            "megawatt-hour": 3.6E+9,
+            "calorie": 4.1868,
+            "kilocalorie": 4186.8,
             "electron-volt": 1.60217E-19,
             "kiloelectron-volt": 1.60217E-16,
             "megaelectron-volt": 1.60217E-13,
@@ -214,7 +215,7 @@ class Force(Quantity):
             "kilonewton": 1.0E+3,
             "meganewton": 1.0E+6,
             "pound-force": 4.44822,
-            "ounce-fource": 0.27801
+            "ounce-force": 0.27801
         }
 
 
@@ -237,7 +238,7 @@ class Time(Quantity):
             "second": 1.0,
             "minute": 60,
             "hour": 3600,
-            "day": 8.64E+5,
+            "day": 8.64E+4,
             "week": 6.048E+5,
             "month": 2.628E+6,
             "year": 3.15576E+7,
