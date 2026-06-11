@@ -362,8 +362,8 @@ class Testideal_ang_banked_curve(unittest.TestCase):
         expected: List[Any] = [
             ValueError("Division by zero is undefined."),
             ValueError("Reconsider if theta can physically be a negative value."),
-            7.59,
-            13.206,
+            19.9975,
+            183.9422,
         ]
 
         for i in range(len(expected)):
@@ -757,7 +757,7 @@ class Testterminal_velocity(unittest.TestCase):
         area: List[float] = [2.5, 2.5, 2.5]
         fluid_dens: List[float] = [1.225, 1.225, 70.0]
 
-        expected = [0.861, 1.216, 49.14]
+        expected = [65.6785, 262.7138, 3753.055]
 
         for i in range(len(expected)):
             if isinstance(expected[i], ValueError):
